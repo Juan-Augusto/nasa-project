@@ -4,7 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "install-server": "npm install --prefix server",
+    "install-client": "npm install --prefix client",
+    "install": "npm run install-server && npm run install-client",
+    "server": "npm run watch --prefix server",
+    "client": "npm start --prefix client",
+    "wait-server": "powershell -Command \"& {do {sleep 1} until (Test-NetConnection -ComputerName localhost -Port 8000 -InformationLevel Quiet)}\"",
+    "deploy": "npm run build --prefix client && npm start --prefix server",
+    "watch": "concurrently -k \"npm run server\" \"npm run wait-server && npm run client\"",
+    "test": "npm run test --prefix server && npm run test --prefix client"
   },
   "repository": {
     "type": "git",
@@ -16,5 +24,8 @@
   "bugs": {
     "url": "https://github.com/odziem/nasa-project/issues"
   },
-  "homepage": "https://github.com/odziem/nasa-project#readme"
+  "homepage": "https://github.com/odziem/nasa-project#readme",
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
 }
